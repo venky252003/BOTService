@@ -15,8 +15,9 @@ namespace CustomerBot
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             Conversation.UpdateContainer(
-            builder =>
+            builder => 
             {
+                //Sample change
                 builder.RegisterModule(new AzureModule(Assembly.GetExecutingAssembly()));
 
                 // Bot Storage: Here we register the state storage for your bot. 
