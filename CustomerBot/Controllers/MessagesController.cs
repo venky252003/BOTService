@@ -1,11 +1,13 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using CustomerBot.Models;
 using CustomerBot.Dialogs;
-using System;
+using Microsoft.Bot.Builder.FormFlow;
 
 namespace CustomerBot
 {
@@ -15,21 +17,7 @@ namespace CustomerBot
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
-        /// </summary>
-        /*public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
-        {
-            if (activity.GetActivityType() == ActivityTypes.Message)
-            {
-                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
-            }
-            else
-            {
-                HandleSystemMessage(activity);
-            }
-            var response = Request.CreateResponse(HttpStatusCode.OK);
-            return response;
-        }*/
-
+        /// </summary>      
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
             var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
@@ -38,12 +26,14 @@ namespace CustomerBot
             {
                 if (activity?.Type == ActivityTypes.Message)
                 {
-                    string chatbotResponse = await new RootDialog().GetResponseAsync(connector, activity);
+                    //string chatbotResponse = await new RootDialog().GetResponseAsync(connector, activity);
 
                     //Activity reply = activity.CreateReply(chatbotResponse);
-                    Activity reply = activity.BuildMessageActivity(chatbotResponse);
+                    //Activity reply = activity.BuildMessageActivity(chatbotResponse);
 
-                    await connector.Conversations.ReplyToActivityAsync(reply);
+                    // await connector.Conversations.ReplyToActivityAsync(reply);
+
+                    await Conversation.SendAsync(activity, () => RegisterDialog());
                 }
             }
             else
@@ -53,6 +43,18 @@ namespace CustomerBot
 
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
+        }
+
+        internal static IDialog<RegisterFA> LUISDialog()
+        {
+            //return Chain.From(() => FormDialog.FromForm(RegisterFA.BuildForm()));
+            return Chain.From(() => new LUISDialog(RegisterFA.BuildForm));
+        }
+
+        internal static IDialog<RegisterFA> RegisterDialog()
+        {
+            return Chain.From(() => FormDialog.FromForm<RegisterFA>(RegisterFA.BuildForm));
+            //return Chain.From(() => new LUISDialog(BugReport.BuildForm));
         }
     }
 

@@ -51,10 +51,12 @@ namespace CustomerBot
             ConnectorClient connector, IConversationUpdateActivity activity)
         {
             const string WelcomeMessage =
-                "Welcome to Meeting Scheduler! " +
-                "Type \"register\" to get started. " +
-                "After that, you can type \"appointment\" to add a new appointment, " +
-                "\"venue\" to add a new venue, or \"schedule\" to schedule a new meeting.";
+                "Welcome to BDA bot! Type your input as below requirement \n" +
+                "\"New FA\" to add FA. \n " +
+                "\"Change Amount\" to change firm award or BDA amount \n " +
+                "\"Team\" to add fa in team \n" +
+                "\"Submit Plan\" to submit your business plan \n " +
+                "\"Q&A\" to FQA detail";
 
             Func<ChannelAccount, bool> isChatbot =
                 channelAcct => channelAcct.Id == activity.Recipient.Id;

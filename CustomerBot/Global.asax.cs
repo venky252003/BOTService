@@ -1,10 +1,16 @@
-﻿using System.Web.Http;
+﻿using Autofac;
 using Microsoft.Bot.Builder.Azure;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
-using Autofac;
 using Microsoft.Bot.Connector;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 using System.Reflection;
+using System.Web;
+using System.Web.Http;
+using System.Web.Routing;
 
 namespace CustomerBot
 {
@@ -34,6 +40,13 @@ namespace CustomerBot
                     .Keyed<IBotDataStore<BotData>>(AzureModule.Key_DataStore)
                     .AsSelf()
                     .SingleInstance();
+                                 
+                /* var store = new TableBotDataStore(ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString);
+                 builder.Register(c => store)
+                           .Keyed<IBotDataStore<BotData>>(AzureModule.Key_DataStore)
+                           .AsSelf()
+                           .SingleInstance();
+                 */
             });
         }
     }

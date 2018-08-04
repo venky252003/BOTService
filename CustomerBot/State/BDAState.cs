@@ -14,9 +14,10 @@ namespace CustomerBot.State
 
         public async Task<UserData> GetAsync(Activity activity)
         {
-            using (StateClient stateClient = activity.GetStateClient())
+            using (IStateClient stateClient = activity.GetStateClient())
             {
                 IBotState chatbotState = stateClient.BotState;
+                
                 BotData chatbotData =
                     await chatbotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
 
